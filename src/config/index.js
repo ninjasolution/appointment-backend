@@ -20,4 +20,6 @@ module.exports = {
 	RES_MSG_DELETE_FAIL: "Data deletion is fail",
 	RES_MSG_DATA_NOT_FOUND: "Data is not found",
 	RES_MSG_DATA_FOUND: "Data is found",
+	RES_MSG_SUCESS: "Success",
+	RES_MSG_FAIL: "Failure",
 }

@@ -4,7 +4,10 @@ var timestamps = require('mongoose-unix-timestamp-plugin');
 module.exports = (connection, autoIncrement) => {
 
   const UserSchema = new mongoose.Schema({
-    name: {
+    firstName: {
+      type: String,
+    },
+    lastName: {
       type: String,
     },
     nickName: {
@@ -15,6 +18,30 @@ module.exports = (connection, autoIncrement) => {
     },
     email: {
       type: String,
+    },
+    businessName: {
+      type: String
+    },
+    businessType: {
+      type: String
+    },
+    teamSize: {
+      type: Number
+    },
+    country: {
+      type: String
+    },
+    location: {
+      type: String
+    },
+    favourSoftwareType: {
+      type: String
+    },
+    whereHear: {
+      type: String
+    },
+    website: {
+      type: String
     },
     gender: {
       type: Number

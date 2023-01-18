@@ -28,6 +28,8 @@ router.get("/auth/requestPhoneVerify", middlewares.authJwt.verifyToken, authCont
 router.get("/auth/rest/:token", authController.reset)
 router.put("/auth/rest", authController.changePassword)
 
+router.post("/user/full-name", middlewares.authJwt.verifyToken, userController.setupFullName);
+router.post("/user/business", middlewares.authJwt.verifyToken, userController.setupBusiness);
 router.get("/user", middlewares.authJwt.verifyToken, userController.allUsers);
 router.get("/user/check-verification", middlewares.authJwt.verifyToken, userController.checkVerification);
 router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getUser);
@@ -50,7 +52,6 @@ router.post("/currency", middlewares.authJwt.verifyToken, currencyController.cre
 router.get("/currency", middlewares.authJwt.verifyToken, currencyController.getAll);
 router.put("/currency", middlewares.authJwt.verifyToken, currencyController.update);
 router.delete("/currency/:id([0-9]+)", [middlewares.authJwt.verifyToken], currencyController.delete);
-
 router.post("/tax", middlewares.authJwt.verifyToken, taxController.create);
 router.get("/tax", middlewares.authJwt.verifyToken, taxController.getAll);
 router.put("/tax", middlewares.authJwt.verifyToken, taxController.update);

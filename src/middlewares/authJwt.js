@@ -9,12 +9,12 @@ const verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(200).send({ message: "No token provided!", status: "errors" });
+    return res.status(200).send({ message: "No token provided!", status: config.RES_STATUS_FAIL });
   }
 
   jwt.verify(token, auth.secret, (err, decoded) => {
     if (err) {
-      return res.status(200).send({ message: "Unauthorized!", status: "errors" });
+      return res.status(200).send({ message: "Unauthorized!", status: config.RES_STATUS_FAIL });
     }
     req.userId = decoded.id;
     next();
@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
 const isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(200).send({ message: err, status: "errors" });
+      res.status(200).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
 
@@ -45,7 +45,7 @@ const isAdmin = (req, res, next) => {
           }
         }
 
-        res.status(200).send({ message: "Require Admin Role!", status: "errors" });
+        res.status(200).send({ message: "Require Admin Role!", status: config.RES_STATUS_FAIL });
         return;
       }
     );
@@ -55,7 +55,7 @@ const isAdmin = (req, res, next) => {
 const isUser = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(200).send({ message: err, status: "errors" });
+      res.status(200).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
 
@@ -65,7 +65,7 @@ const isUser = (req, res, next) => {
       },
       (err, roles) => {
         if (err) {
-          res.status(200).send({ message: err, status: "errors" });
+          res.status(200).send({ message: err, status: config.RES_STATUS_FAIL });
           return;
         }
 
@@ -76,7 +76,7 @@ const isUser = (req, res, next) => {
           }
         }
 
-        res.status(200).send({ message: "Require user Role!", status: "errors" });
+        res.status(200).send({ message: "Require user Role!", status: config.RES_STATUS_FAIL });
         return;
       }
     );
