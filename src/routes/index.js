@@ -36,7 +36,6 @@ router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.au
 router.put("/user", middlewares.authJwt.verifyToken, userController.update);
 router.delete("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.delete);
 
-
 router.post("/brand", middlewares.authJwt.verifyToken, brandController.create);
 router.get("/brand", middlewares.authJwt.verifyToken, brandController.getAll);
 router.put("/brand", middlewares.authJwt.verifyToken, brandController.update);
@@ -47,11 +46,11 @@ router.get("/category", middlewares.authJwt.verifyToken, categoryController.getA
 router.put("/category", middlewares.authJwt.verifyToken, categoryController.update);
 router.delete("/category/:id([0-9]+)", [middlewares.authJwt.verifyToken], categoryController.delete);
 
-
 router.post("/currency", middlewares.authJwt.verifyToken, currencyController.create);
 router.get("/currency", middlewares.authJwt.verifyToken, currencyController.getAll);
 router.put("/currency", middlewares.authJwt.verifyToken, currencyController.update);
 router.delete("/currency/:id([0-9]+)", [middlewares.authJwt.verifyToken], currencyController.delete);
+
 router.post("/tax", middlewares.authJwt.verifyToken, taxController.create);
 router.get("/tax", middlewares.authJwt.verifyToken, taxController.getAll);
 router.put("/tax", middlewares.authJwt.verifyToken, taxController.update);
