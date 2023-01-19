@@ -52,6 +52,12 @@ module.exports = (connection, autoIncrement) => {
     avatar: {
       type: String
     },
+    birthdate: {
+      type: Date
+    },
+    birthyear: {
+      type: Number
+    },
     status: {
       type: Number
     },
@@ -75,10 +81,44 @@ module.exports = (connection, autoIncrement) => {
     resetPasswordExpires: {
       type: Date
     },
+    employment: {
+      type: Object
+    },
+    enableBooking: {
+      type: Boolean
+    },
+    services: [{
+      type: Number,
+      ref: "Service"
+    }],
+    commission: {
+      type: Object
+    },
+    permission: {
+      type: Number
+    },
     roles: [
       {
         type: Number,
         ref: "Role"
+      }
+    ],
+    clients: [
+      {
+        type: Number,
+        ref: "User"
+      }
+    ],
+    suppliers: [
+      {
+        type: Number,
+        ref: "User"
+      }
+    ],
+    members: [
+      {
+        type: Number,
+        ref: "User"
       }
     ],
     tokens: [

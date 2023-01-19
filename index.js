@@ -4,7 +4,6 @@ const cors = require("cors");
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-const passport    = require('passport');
 const session = require('express-session');
 const bcrypt = require("bcryptjs");
 const indexRouter = require("./src/routes");
@@ -115,7 +114,7 @@ function initial() {
         await role.save();  
       })
 
-      const role = Role.findOne({name: config.ROLE_ADMIN});
+      const role = await Role.findOne({name: config.ROLE_ADMIN});
       const adminUser = new User({
         firstName: "Ninja",
         lastName: "Cooler",
@@ -153,10 +152,10 @@ function initial() {
     if (!err && count == 0) {
 
       source.categoryType.forEach(async item => {
-        const country = new Country({ 
+        const cateType = new CategoryType({ 
             name: item, 
           });
-        await country.save();  
+        await cateType.save();  
       })
     }
   });
@@ -165,10 +164,10 @@ function initial() {
     if (!err && count == 0) {
 
       source.currencies.forEach(async item => {
-        const country = new Country({ 
+        const currency = new Currency({ 
             name: item, 
           });
-        await country.save();  
+        await currency.save();  
       })
     }
   });

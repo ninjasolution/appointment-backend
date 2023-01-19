@@ -74,6 +74,88 @@ exports.setupBusiness = (req, res) => {
   
 }
 
+exports.addClient = async (req, res) => {
+
+  const clientRole = await Role.findOne({name: config.ROLE_CLIENT})
+  const client = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    phone: req.body.phone,
+    secondPhone: req.body.secondPhone,
+    gender: req.body.gender,
+    birthdate: req.body.birthdate,
+    birthyear: req.body.birthyear,
+    info: req.body.info,
+    address: req.body.address,
+    roles: [ clientRole._id ]
+  })
+
+  client.save( (err, _client) => {
+
+    if (err) {
+      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      return;
+    }
+
+    User.updateOne({_id: req.userId}, {$push: {clients: client._id}})
+    .exec((err, user) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_MSG_UPDATE_FAIL });
+        return;
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_SAVE_SUCCESS,
+        data: _client,
+        status: config.RES_STATUS_SUCCESS
+      });
+    })
+  });
+}
+
+exports.addMember = async (req, res) => {
+
+  const memberRole = await Role.findOne({name: config.ROLE_MEMBER})
+  const client = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    avatar: req.body.avatar,
+    email: req.body.email,
+    phone: req.body.phone,
+    info: req.body.info,
+    employment: req.body.employment,
+    enableBooking: req.body.enableBooking,
+    services: req.body.services,
+    commission: req.body.commission,
+    permission: req.body.permission,
+    roles: [ memberRole._id ]
+  })
+
+  client.save( (err, _client) => {
+
+    if (err) {
+      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      return;
+    }
+
+    User.updateOne({_id: req.userId}, {$push: {clients: client._id}})
+    .exec((err, user) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_MSG_UPDATE_FAIL });
+        return;
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_SAVE_SUCCESS,
+        data: _client,
+        status: config.RES_STATUS_SUCCESS
+      });
+    })
+  });
+}
 
 exports.allUsers = (req, res) => {
   User.find()
@@ -137,7 +219,6 @@ exports.checkVerification = (req, res) => {
 
     })
 }
-
 
 exports.update = (req, res) => {
   User.findOne({ _id: req.userId })
