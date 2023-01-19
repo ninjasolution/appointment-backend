@@ -34,6 +34,7 @@ db.stockOrder = require("./stockOrder.model")(db.connection, autoIncrement);
 db.stockTake = require("./stockTake.model")(db.connection, autoIncrement);
 db.appointment = require("./appointment.model")(db.connection, autoIncrement);
 db.voucher = require("./voucher.model")(db.connection, autoIncrement);
+db.country = require("./country.model")(db.connection, autoIncrement);
 db.ROLES = ["user", "supplier", "client", "member"];
 
 module.exports = db;

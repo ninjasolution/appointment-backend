@@ -38,62 +38,62 @@ router.delete("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares
 
 router.post("/brand", middlewares.authJwt.verifyToken, brandController.create);
 router.get("/brand", middlewares.authJwt.verifyToken, brandController.getAll);
-router.put("/brand", middlewares.authJwt.verifyToken, brandController.update);
+router.put("/brand/:id([0-9]+)", middlewares.authJwt.verifyToken, brandController.update);
 router.delete("/brand/:id([0-9]+)", [middlewares.authJwt.verifyToken], brandController.delete);
 
 router.post("/category", middlewares.authJwt.verifyToken, categoryController.create);
 router.get("/category", middlewares.authJwt.verifyToken, categoryController.getAll);
-router.put("/category", middlewares.authJwt.verifyToken, categoryController.update);
+router.put("/category/:id([0-9]+)", middlewares.authJwt.verifyToken, categoryController.update);
 router.delete("/category/:id([0-9]+)", [middlewares.authJwt.verifyToken], categoryController.delete);
 
 router.post("/currency", middlewares.authJwt.verifyToken, currencyController.create);
 router.get("/currency", middlewares.authJwt.verifyToken, currencyController.getAll);
-router.put("/currency", middlewares.authJwt.verifyToken, currencyController.update);
+router.put("/currency/:id([0-9]+)", middlewares.authJwt.verifyToken, currencyController.update);
 router.delete("/currency/:id([0-9]+)", [middlewares.authJwt.verifyToken], currencyController.delete);
 
 router.post("/tax", middlewares.authJwt.verifyToken, taxController.create);
 router.get("/tax", middlewares.authJwt.verifyToken, taxController.getAll);
-router.put("/tax", middlewares.authJwt.verifyToken, taxController.update);
+router.put("/tax/:id([0-9]+)", middlewares.authJwt.verifyToken, taxController.update);
 router.delete("/tax/:id([0-9]+)", [middlewares.authJwt.verifyToken], taxController.delete);
 
 router.post("/measure", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], measureController.create);
 router.get("/measure", middlewares.authJwt.verifyToken, measureController.getAll);
-router.put("/measure", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], measureController.update);
+router.put("/measure/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], measureController.update);
 router.delete("/measure/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], measureController.delete);
 
 router.post("/membership", middlewares.authJwt.verifyToken, membershipController.create);
 router.get("/membership", middlewares.authJwt.verifyToken, membershipController.getAll);
-router.put("/membership", middlewares.authJwt.verifyToken, membershipController.update);
+router.put("/membership/:id([0-9]+)", middlewares.authJwt.verifyToken, membershipController.update);
 router.delete("/membership/:id([0-9]+)", [middlewares.authJwt.verifyToken], membershipController.delete);
 
 router.post("/product", middlewares.authJwt.verifyToken, productController.create);
 router.get("/product", middlewares.authJwt.verifyToken, productController.getAll);
-router.put("/product", middlewares.authJwt.verifyToken, productController.update);
+router.put("/product/:id([0-9]+)", middlewares.authJwt.verifyToken, productController.update);
 router.delete("/product/:id([0-9]+)", [middlewares.authJwt.verifyToken], productController.delete);
 
 router.post("/service", middlewares.authJwt.verifyToken, serviceController.create);
 router.get("/service", middlewares.authJwt.verifyToken, serviceController.getAll);
-router.put("/service", middlewares.authJwt.verifyToken, serviceController.update);
+router.put("/service/:id([0-9]+)", middlewares.authJwt.verifyToken, serviceController.update);
 router.delete("/service/:id([0-9]+)", [middlewares.authJwt.verifyToken], serviceController.delete);
 
 router.post("/stock-order", middlewares.authJwt.verifyToken, stockOrderController.create);
 router.get("/stock-order", middlewares.authJwt.verifyToken, stockOrderController.getAll);
-router.put("/stock-order", middlewares.authJwt.verifyToken, stockOrderController.update);
+router.put("/stock-order/:id([0-9]+)", middlewares.authJwt.verifyToken, stockOrderController.update);
 router.delete("/stock-order/:id([0-9]+)", [middlewares.authJwt.verifyToken], stockOrderController.delete);
 
 router.post("/stock-take", middlewares.authJwt.verifyToken, stockTakeController.create);
 router.get("/stock-take", middlewares.authJwt.verifyToken, stockTakeController.getAll);
-router.put("/stock-take", middlewares.authJwt.verifyToken, stockTakeController.update);
+router.put("/stock-take/:id([0-9]+)", middlewares.authJwt.verifyToken, stockTakeController.update);
 router.delete("/stock-take/:id([0-9]+)", [middlewares.authJwt.verifyToken], stockTakeController.delete);
 
 router.post("/treatment", middlewares.authJwt.verifyToken, treatmentController.create);
 router.get("/treatment", middlewares.authJwt.verifyToken, treatmentController.getAll);
-router.put("/treatment", middlewares.authJwt.verifyToken, treatmentController.update);
+router.put("/treatment/:id([0-9]+)", middlewares.authJwt.verifyToken, treatmentController.update);
 router.delete("/treatment/:id([0-9]+)", [middlewares.authJwt.verifyToken], treatmentController.delete);
 
 router.post("/voucher", middlewares.authJwt.verifyToken, voucherController.create);
 router.get("/voucher", middlewares.authJwt.verifyToken, voucherController.getAll);
-router.put("/voucher", middlewares.authJwt.verifyToken, voucherController.update);
+router.put("/voucher/:id([0-9]+)", middlewares.authJwt.verifyToken, voucherController.update);
 router.delete("/voucher/:id([0-9]+)", [middlewares.authJwt.verifyToken], voucherController.delete);
 
 module.exports = router;

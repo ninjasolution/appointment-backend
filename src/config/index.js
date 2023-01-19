@@ -7,6 +7,7 @@ module.exports = {
 	ROLE_ADMIN: "admin",
 	ROLE_USER: "user",
 	ROLE_CLIENT: "client",
+	ROLE_SUPPLIER: "supplier",
 	ROLE_MEMBER: "member",
 	TOKEN_TYPE_EMAIL: "email",
 	TOKEN_TYPE_SMS: "sms",

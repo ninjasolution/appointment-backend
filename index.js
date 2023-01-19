@@ -7,11 +7,11 @@ var bodyParser = require('body-parser');
 const passport    = require('passport');
 const session = require('express-session');
 const bcrypt = require("bcryptjs");
-
 const indexRouter = require("./src/routes");
 
 const { secret } = require("./src/config/auth.config")
 const config = require("./src/config/index")
+const source = require("./src/config/source")
 
 require('dotenv').config(); 
 
@@ -85,6 +85,9 @@ app.use(function(err, req, res, next) {
 
 const db = require("./src/models");
 const Role = db.role;
+const Country = db.country;
+const Currency = db.currency;
+const CategoryType = db.categoryType;
 const User = db.user;
 db.connection.on("open", () => {
   console.log("Successfully connect to MongoDB.");
@@ -104,44 +107,69 @@ app.listen(PORT, () => {
 
 
 function initial() {
-  Role.estimatedDocumentCount((err, count) => {
+  Role.estimatedDocumentCount(async (err, count) => {
     if (!err && count == 0) {
-      new Role({
-        name: config.ROLE_USER
-      }).save(err => {
+
+      source.roles.forEach(async item => {
+        const role = new Role({ name: item});
+        await role.save();  
+      })
+
+      const role = Role.findOne({name: config.ROLE_ADMIN});
+      const adminUser = new User({
+        firstName: "Ninja",
+        lastName: "Cooler",
+        email: "admin@gmail.com",
+        password: bcrypt.hashSync("111", 8),
+        roles: [role._id]
+      })
+
+      adminUser.save(err => {
         if (err) {
-          console.log("error", err);
+          return console.log(err);
         }
+        console.log("Database is initialized successfuly!")
       });
+    }
+  });
 
-      new Role({
-        name: config.ROLE_ADMIN
-      }).save(err => {
-        if (err) {
-          console.log("error", err);
-        }
+  Country.estimatedDocumentCount(async (err, count) => {
+    if (!err && count == 0) {
 
-          const adminUser = new User({
-            name: "ninja cooler",
-            email: "admin@gmail.com",
-            password: bcrypt.hashSync("admin", 8)
-          })
-          Role.find({name: config.ROLE_USER}, (err, roles) => {
-              if (err) {
-                return;
-              }
-      
-              adminUser.roles = roles.map(role => role._id);
-              adminUser.save(err => {
-                if (err) {
-                  return console.log(err);
-                }
-
-                console.log("Database is initialized successfuly!")
-              });
+      source.countries.forEach(async item => {
+        const country = new Country({ 
+            name: item.name, 
+            code: item.code, 
+            timezone: item.timezone, 
+            utc: item.utc, 
+            mobileCode: item.mobileCode, 
           });
-        
-      });
+        await country.save();  
+      })
+    }
+  });
+
+  CategoryType.estimatedDocumentCount(async (err, count) => {
+    if (!err && count == 0) {
+
+      source.categoryType.forEach(async item => {
+        const country = new Country({ 
+            name: item, 
+          });
+        await country.save();  
+      })
+    }
+  });
+
+  Currency.estimatedDocumentCount(async (err, count) => {
+    if (!err && count == 0) {
+
+      source.currencies.forEach(async item => {
+        const country = new Country({ 
+            name: item, 
+          });
+        await country.save();  
+      })
     }
   });
 }

@@ -39,13 +39,14 @@ const isAdmin = (req, res, next) => {
         }
 
         for (let i = 0; i < roles.length; i++) {
+          console.log(roles[i].name)
           if (roles[i].name === config.ROLE_ADMIN) {
             next();
             return;
           }
         }
 
-        res.status(200).send({ message: "Require Admin Role!", status: config.RES_STATUS_FAIL });
+        res.status(403).send({ message: "Require Admin Role!", status: config.RES_STATUS_FAIL });
         return;
       }
     );
@@ -76,7 +77,7 @@ const isUser = (req, res, next) => {
           }
         }
 
-        res.status(200).send({ message: "Require user Role!", status: config.RES_STATUS_FAIL });
+        res.status(403).send({ message: "Require user Role!", status: config.RES_STATUS_FAIL });
         return;
       }
     );
