@@ -16,6 +16,10 @@ module.exports = (connection, autoIncrement) => {
       type: Number,
       default: 0
     },
+    tip: {
+      type: Number,
+      default: 0
+    },
     type: {
       type: Number
     },

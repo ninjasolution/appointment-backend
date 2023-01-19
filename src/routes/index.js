@@ -11,12 +11,10 @@ const measureController = require("../controllers/measure.controller");
 const membershipController = require("../controllers/membership.controller");
 const productController = require("../controllers/product.controller");
 const serviceController = require("../controllers/service.controller");
-const stockOrderController = require("../controllers/stockOrder.controller");
-const stockTakeController = require("../controllers/stockTake.controller");
 const treatmentController = require("../controllers/treatment.controller");
 const voucherController = require("../controllers/voucher.controller");
 const service = require("../service");
- 
+
 router.post("/auth/signup", [middlewares.verifySignUp.checkRolesExisted], authController.signup)
 router.post("/auth/signin", authController.signin)
 router.post("/auth/signout", authController.signout)
@@ -78,15 +76,6 @@ router.get("/service", middlewares.authJwt.verifyToken, serviceController.getAll
 router.put("/service/:id([0-9]+)", middlewares.authJwt.verifyToken, serviceController.update);
 router.delete("/service/:id([0-9]+)", [middlewares.authJwt.verifyToken], serviceController.delete);
 
-router.post("/stock-order", middlewares.authJwt.verifyToken, stockOrderController.create);
-router.get("/stock-order", middlewares.authJwt.verifyToken, stockOrderController.getAll);
-router.put("/stock-order/:id([0-9]+)", middlewares.authJwt.verifyToken, stockOrderController.update);
-router.delete("/stock-order/:id([0-9]+)", [middlewares.authJwt.verifyToken], stockOrderController.delete);
-
-router.post("/stock-take", middlewares.authJwt.verifyToken, stockTakeController.create);
-router.get("/stock-take", middlewares.authJwt.verifyToken, stockTakeController.getAll);
-router.put("/stock-take/:id([0-9]+)", middlewares.authJwt.verifyToken, stockTakeController.update);
-router.delete("/stock-take/:id([0-9]+)", [middlewares.authJwt.verifyToken], stockTakeController.delete);
 
 router.post("/treatment", middlewares.authJwt.verifyToken, treatmentController.create);
 router.get("/treatment", middlewares.authJwt.verifyToken, treatmentController.getAll);
