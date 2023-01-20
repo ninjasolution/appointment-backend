@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -32,8 +33,10 @@ module.exports = (connection, autoIncrement) => {
       ref: "User"
     }
   });
+
   OrderSchema.plugin(autoIncrement.plugin, "Order")
   OrderSchema.plugin(timestamps);
+  OrderSchema.plugin(mongoosePaginate);
 
   const Order = connection.model(
     "Order",

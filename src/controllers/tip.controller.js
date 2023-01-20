@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Tip.find()
+  Tip.find({user: req.userId})
     .exec((err, tips) => {
 
       if (err) {

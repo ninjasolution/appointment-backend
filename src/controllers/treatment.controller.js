@@ -44,7 +44,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Treatment.updateOne({ _id: req.params.id }, { name: req.body.name })
+  Treatment.updateOne({ _id: req.params.id }, req.body)
     .exec((err, treatment) => {
 
       if (err) {

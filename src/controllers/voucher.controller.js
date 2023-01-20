@@ -31,7 +31,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Voucher.find()
+  Voucher.find({user: req.userId})
     .exec((err, vouchers) => {
 
       if (err) {
@@ -52,7 +52,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Voucher.updateOne({ _id: req.params.id }, { name: req.body.name })
+  Voucher.updateOne({ _id: req.params.id }, req.body)
     .exec((err, voucher) => {
 
       if (err) {

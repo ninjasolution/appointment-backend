@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
       if(req.body.type == config.ORDER_TYPE_SALE) {
         Product.updateOne({_id: req.body.carts[i].productId}, {$inc: {quantity: req.body.carts[i].quantity * -1}})
       }
-      
+
       let cart = new Cart({
         product: req.body.carts[i].productId,
         quantity: req.body.carts[i].quantity,
@@ -42,7 +42,7 @@ exports.create = async (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Order.find()
+  Order.find({user: req.userId})
     .exec((err, orders) => {
 
       if (err) {
@@ -63,7 +63,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Order.updateOne({ _id: req.params.id }, {name: req.body.name})
+  Order.updateOne({ _id: req.params.id }, req.body)
     .exec(async (err, brand) => {
 
       if (err) {

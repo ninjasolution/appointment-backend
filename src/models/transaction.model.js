@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -41,6 +42,7 @@ module.exports = (connection, autoIncrement) => {
   });
   TransactionSchema.plugin(autoIncrement.plugin, "Transaction")
   TransactionSchema.plugin(timestamps);
+  TransactionSchema.plugin(mongoosePaginate);
 
   const Transaction = connection.model(
     "Transaction",

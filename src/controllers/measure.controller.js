@@ -43,7 +43,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Measure.updateOne({ _id: req.params.id }, { name: req.body.name })
+  Measure.updateOne({ _id: req.params.id }, req.body)
     .exec((err, measure) => {
 
       if (err) {

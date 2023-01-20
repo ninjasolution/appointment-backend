@@ -6,43 +6,43 @@ const config = require("../config/index")
 
 exports.create = async (req, res) => {
 
-  if(req.body.carts?.length > 0) {
+  const transaction = new Transaction({
+    status: req.body.status,
+    type: req.body.type,
+    user: req.userId,
+    payment: req.body.payment,
+    tip: req.body.tip,
+    client: req.body.client
+  })
 
-    var carts = [];
-    for(let i=0 ; i<req.body.carts?.length ; i ++) {
-      if(req.body.type == config.ORDER_TYPE_SALE) {
-        Product.updateOne({_id: req.body.carts[i].productId}, {$inc: {quantity: req.body.carts[i].quantity * -1}})
-      }
-      
-      let cart = new Cart({
-        product: req.body.carts[i].productId,
-        quantity: req.body.carts[i].quantity,
-        price: req.body.carts[i].price
-      })
-      cart = await cart.save();
-      carts.push(cart._id);
-    }
-
-    const transaction = new Transaction({
-      carts,
-      note: req.body.note,
-      status: req.body.status,
-      type: req.body.type,
-      user: req.userId,
-      to: req.body.supplier
-    })
-
-    await transaction.save();
-    return res.status(200).send({
-      message: config.RES_MSG_SAVE_SUCCESS,
-      data: transaction,
-      status: config.RES_STATUS_SUCCESS,
-    });
+  switch (req.body.type) {
+    case config.TRX_TYPE_PRODUCT:
+      transaction.product = req.body.productId;
+      break;
+    case config.TRX_TYPE_MEMBERSHIP:
+      transaction.membership = req.body.membershipId;
+      break;
+    case config.TRX_TYPE_SERVICE:
+      transaction.service = req.body.serviceId;
+      break;
+    case config.TRX_TYPE_VOUCHER:
+      transaction.voucher = req.body.voucherId;
+      break;
+    default:
+      break;
   }
+
+
+  await transaction.save();
+  return res.status(200).send({
+    message: config.RES_MSG_SAVE_SUCCESS,
+    data: transaction,
+    status: config.RES_STATUS_SUCCESS,
+  });
 }
 
 exports.getAll = (req, res) => {
-  Transaction.find()
+  Transaction.find({user: req.userId})
     .exec((err, transactions) => {
 
       if (err) {
@@ -63,7 +63,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Transaction.updateOne({ _id: req.params.id }, {name: req.body.name})
+  Transaction.updateOne({ _id: req.params.id }, req.body)
     .exec(async (err, transaction) => {
 
       if (err) {

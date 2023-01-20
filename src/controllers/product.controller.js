@@ -42,7 +42,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Product.find()
+  Product.find({user: req.userId})
     .exec((err, products) => {
 
       if (err) {

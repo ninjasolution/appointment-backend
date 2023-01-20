@@ -33,7 +33,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Membership.find()
+  Membership.find({user: req.userId})
     .exec((err, memberships) => {
 
       if (err) {
@@ -54,7 +54,7 @@ exports.getAll = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  Membership.updateOne({ _id: req.params.id }, { name: req.body.name })
+  Membership.updateOne({ _id: req.params.id }, req.body)
     .exec((err, membership) => {
 
       if (err) {

@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Tax.find()
+  Tax.find({user: req.userId})
     .exec((err, taxes) => {
 
       if (err) {

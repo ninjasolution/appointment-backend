@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var timestamps = require('mongoose-unix-timestamp-plugin');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 module.exports = (connection, autoIncrement) => {
 
@@ -71,6 +72,7 @@ module.exports = (connection, autoIncrement) => {
   })
   
   ServiceSchema.plugin(timestamps)
+  ServiceSchema.plugin(mongoosePaginate)
   ServiceSchema.plugin(autoIncrement.plugin, "Service")
   
   const Service = connection.model(

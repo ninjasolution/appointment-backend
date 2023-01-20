@@ -38,7 +38,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Service.find()
+  Service.find({user: req.userId})
     .exec((err, services) => {
 
       if (err) {

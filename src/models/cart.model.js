@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -18,6 +19,7 @@ module.exports = (connection, autoIncrement) => {
   });
   CartSchema.plugin(autoIncrement.plugin, "Cart")
   CartSchema.plugin(timestamps);
+  CartSchema.plugin(mongoosePaginate);
 
   const Cart = connection.model(
     "Cart",

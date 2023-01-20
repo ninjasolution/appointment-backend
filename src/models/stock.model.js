@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const timestamps = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -22,6 +23,7 @@ module.exports = (connection, autoIncrement) => {
   });
   StockSchema.plugin(autoIncrement.plugin, "Stock")
   StockSchema.plugin(timestamps);
+  StockSchema.plugin(mongoosePaginate);
 
   const Stock = connection.model(
     "Stock",
