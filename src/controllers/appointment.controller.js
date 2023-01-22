@@ -25,7 +25,12 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Appointment.find({user: req.userId})
+  var options = {
+    sort: { date: -1 },
+    page: req.query.page || 0,
+    limit: req.query.limit || 10,
+  };
+  Appointment.paginate({user: req.userId}, options)
     .exec((err, appointments) => {
 
       if (err) {

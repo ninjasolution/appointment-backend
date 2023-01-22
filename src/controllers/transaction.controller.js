@@ -42,7 +42,13 @@ exports.create = async (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Transaction.find({user: req.userId})
+
+  var options = {
+    sort: { date: -1 },
+    page: req.query.page || 0,
+    limit: req.query.limit || 10,
+  };
+  Transaction.paginate({user: req.userId}, options)
     .exec((err, transactions) => {
 
       if (err) {
