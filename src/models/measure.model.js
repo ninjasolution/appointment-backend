@@ -9,7 +9,7 @@ module.exports = (connection, autoIncrement) => {
     },
   })
   
-  MeasureSchema.plugin(timestamps)
+  MeasureSchema.plugin(autoIncrement.plugin, "Measure")
   
   const Measure = connection.model(
     "Measure",

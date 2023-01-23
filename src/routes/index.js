@@ -13,6 +13,7 @@ const productController = require("../controllers/product.controller");
 const serviceController = require("../controllers/service.controller");
 const treatmentController = require("../controllers/treatment.controller");
 const voucherController = require("../controllers/voucher.controller");
+const appointmentController = require("../controllers/appointment.controller");
 const service = require("../service");
 
 router.post("/auth/signup", [middlewares.verifySignUp.checkRolesExisted], authController.signup)
@@ -86,5 +87,10 @@ router.post("/voucher", middlewares.authJwt.verifyToken, voucherController.creat
 router.get("/voucher", middlewares.authJwt.verifyToken, voucherController.getAll);
 router.put("/voucher/:id([0-9]+)", middlewares.authJwt.verifyToken, voucherController.update);
 router.delete("/voucher/:id([0-9]+)", [middlewares.authJwt.verifyToken], voucherController.delete);
+
+router.post("/appointment", middlewares.authJwt.verifyToken, appointmentController.create);
+router.get("/appointment", middlewares.authJwt.verifyToken, appointmentController.getAll);
+router.put("/appointment/:id([0-9]+)", middlewares.authJwt.verifyToken, appointmentController.update);
+router.delete("/appointment/:id([0-9]+)", [middlewares.authJwt.verifyToken], appointmentController.delete);
 
 module.exports = router;

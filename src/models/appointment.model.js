@@ -5,19 +5,9 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 module.exports = (connection, autoIncrement) => {
 
   const AppointmentSchema = new mongoose.Schema({
-    appointments: [{
-      type: {
-        startTime: Number,
-        service: {
-          type: Number,
-          ref: "Service"
-        },
-        duration: Number,
-        member: {
-          type: Number,
-          ref: "User"
-        }
-      }
+    items: [{
+      type: Number,
+      ref: "appointmentItem"
     }],
     note: {
       type: String
@@ -27,6 +17,10 @@ module.exports = (connection, autoIncrement) => {
       default: 0
     },
     user: {
+      type: Number,
+      ref: "User"
+    },
+    client: {
       type: Number,
       ref: "User"
     }

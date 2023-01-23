@@ -33,6 +33,7 @@ db.transaction = require("./transaction.model")(db.connection, autoIncrement);
 db.membership = require("./membership.model")(db.connection, autoIncrement);
 db.service = require("./service.model")(db.connection, autoIncrement);
 db.appointment = require("./appointment.model")(db.connection, autoIncrement);
+db.appointmentItem = require("./appointmentItem.model")(db.connection, autoIncrement);
 db.voucher = require("./voucher.model")(db.connection, autoIncrement);
 db.country = require("./country.model")(db.connection, autoIncrement);
 db.ROLES = ["user", "supplier", "client", "member"];

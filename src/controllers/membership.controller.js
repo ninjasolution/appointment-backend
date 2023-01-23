@@ -38,7 +38,19 @@ exports.getAll = (req, res) => {
     page: req.query.page || 0,
     limit: req.query.limit || 10,
   };
-  Membership.paginate({user: req.userId}, options)
+
+  var query = {
+    user: req.userId,
+  }
+
+  if(req.query.from) {
+    query.$gte = { createdAt: req.query.from };
+  }
+
+  if(req.query.from) {
+    query.$lte = { createdAt: req.query.to };
+  }
+  Membership.paginate(query, options)
     .exec((err, memberships) => {
 
       if (err) {

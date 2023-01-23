@@ -159,7 +159,7 @@ exports.addMember = async (req, res) => {
 
 exports.allUsers = (req, res) => {
   User.find()
-    .populate('roles')
+    .populate('roles', "-__v -users")
     .exec((err, users) => {
 
       if (err) {
@@ -168,7 +168,7 @@ exports.allUsers = (req, res) => {
       }
 
       if (!users) {
-        return res.status(404).send({ message: "Orders Not found." });
+        return res.status(404).send({ message: "Users Not found." });
       }
 
       return res.status(200).send(users);

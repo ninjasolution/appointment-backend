@@ -31,4 +31,5 @@ module.exports = {
 	RES_MSG_DATA_FOUND: "Data is found",
 	RES_MSG_SUCESS: "Success",
 	RES_MSG_FAIL: "Failure",
+	RES_MSG_INVALID_REQUEST: "Invalid request",
 }
