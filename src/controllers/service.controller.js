@@ -39,7 +39,7 @@ exports.create = (req, res) => {
 
 exports.getAll = (req, res) => {
   var options = {
-    sort: { date: -1 },
+    sort: { createdAt: -1 },
     page: req.query.page || 0,
     limit: req.query.limit || 10,
   };

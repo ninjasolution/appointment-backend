@@ -31,7 +31,12 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Voucher.find({user: req.userId})
+  var options = {
+    sort: { createdAt: -1 },
+    page: req.query.page || 0,
+    limit: req.query.limit || 10,
+  };
+  Voucher.paginate({user: req.userId}, options)
     .exec((err, vouchers) => {
 
       if (err) {

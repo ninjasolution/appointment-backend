@@ -10,7 +10,6 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const axios = require('axios').default;
 
 
 exports.signup = async (req, res) => {
@@ -115,6 +114,8 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
+      console.log(user)
+
       res.status(200).send({
         status: config.RES_STATUS_SUCCESS,
         token,
@@ -127,7 +128,7 @@ exports.signin = (req, res) => {
           changePasswordAt: user.changePasswordAt,
           passwordtoken: user.resetPasswordToken,
           passwordtokenexp: user.resetPasswordExpires,
-          roles: user.roles,
+          roles: user.roles.map(r => r.name),
         }
       });
     });
@@ -176,7 +177,7 @@ exports.verifyEmail = async (req, res) => {
 
 
   } catch (error) {
-    res.status(200).send({ message: "An error occured", status: config.RES_STATUS_FAIL });
+    res.status(500).send({ message: "An error occured", status: config.RES_STATUS_FAIL });
   }
 }
 
@@ -214,18 +215,18 @@ exports.signout = async (req, res) => {
       status: config.RES_STATUS_SUCCESS
     });
   } catch (err) {
-    res.status(200).send({ message: "An error occured", status: config.RES_STATUS_FAIL });
+    res.status(500).send({ message: "An error occured", status: config.RES_STATUS_FAIL });
   }
 };
 
-exports.forgot = async (req, res, next) => {
+exports.forgot = async (req, res) => {
   const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
   User.findOne({ email: req.body.email }, {}, async function (err, user) {
     if (err) {
-      return res.status(200).send({ message: err, status: config.RES_STATUS_FAIL });
+      return res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
     }
     if (!user) {
-      return res.status(200).send({ message: "There is no user with this email", status: config.RES_STATUS_FAIL });
+      return res.status(404).send({ message: "There is no user with this email", status: config.RES_STATUS_FAIL });
     }
 
     user.resetPasswordToken = token;
@@ -241,7 +242,7 @@ exports.forgot = async (req, res, next) => {
 
       return res.status(200).send({ resettoken: token, status: config.RES_STATUS_SUCCESS });
     } catch {
-      return res.status(200).send({ message: "There is no user with this email.", status: config.RES_STATUS_FAIL });
+      return res.status(205000).send({ message: "There is no user with this email.", status: config.RES_STATUS_FAIL });
     }
   })
 }

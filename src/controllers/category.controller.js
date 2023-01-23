@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-  Category.find()
+  Category.find({user: req.userId})
     .exec((err, categories) => {
 
       if (err) {

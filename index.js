@@ -109,10 +109,10 @@ function initial() {
   Role.estimatedDocumentCount(async (err, count) => {
     if (!err && count == 0) {
 
-      source.roles.forEach(async item => {
-        const role = new Role({ name: item});
+      for(let i=0 ; i<source.roles.length ; i++) {
+        const role = new Role({ name: source.roles[i]});
         await role.save();  
-      })
+      }
 
       const role = await Role.findOne({name: config.ROLE_ADMIN});
       const adminUser = new User({
@@ -123,11 +123,11 @@ function initial() {
         roles: [role._id]
       })
 
-      adminUser.save(err => {
+      adminUser.save((err, admin) => {
         if (err) {
           return console.log(err);
         }
-        console.log("Database is initialized successfuly!")
+        console.log(admin)
       });
     }
   });
