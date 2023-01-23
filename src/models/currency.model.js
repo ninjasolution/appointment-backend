@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const timestamps = require('mongoose-timestamp');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -11,7 +10,6 @@ module.exports = (connection, autoIncrement) => {
     }
   });
   CurrencySchema.plugin(autoIncrement.plugin, "Currency")
-  CurrencySchema.plugin(timestamps);
 
   const Currency = connection.model(
     "Currency",

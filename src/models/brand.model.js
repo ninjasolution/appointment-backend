@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const timestamps = require('mongoose-timestamp');
-
 
 module.exports = (connection, autoIncrement) => {
 
@@ -15,7 +13,6 @@ module.exports = (connection, autoIncrement) => {
     }
   });
   BrandSchema.plugin(autoIncrement.plugin, "Brand")
-  BrandSchema.plugin(timestamps);
 
   const Brand = connection.model(
     "Brand",

@@ -53,7 +53,7 @@ module.exports = (connection, autoIncrement) => {
       type: String
     },
     birthdate: {
-      type: Date
+      type: String
     },
     birthyear: {
       type: Number
@@ -73,13 +73,13 @@ module.exports = (connection, autoIncrement) => {
       default: false
     },
     changePasswordAt: {
-      type: Date,
+      type: Number,
     },
     resetPasswordToken: {
-      type: String
+      type: Number
     },
     resetPasswordExpires: {
-      type: Date
+      type: Number
     },
     employment: {
       type: Object

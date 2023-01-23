@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const timestamps = require('mongoose-timestamp');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -24,7 +23,6 @@ module.exports = (connection, autoIncrement) => {
     },
   });
   CountrySchema.plugin(autoIncrement.plugin, "Country")
-  CountrySchema.plugin(timestamps);
 
   const Country = connection.model(
     "Country",

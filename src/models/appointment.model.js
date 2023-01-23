@@ -7,7 +7,7 @@ module.exports = (connection, autoIncrement) => {
   const AppointmentSchema = new mongoose.Schema({
     appointments: [{
       type: {
-        startTime: Date,
+        startTime: Number,
         service: {
           type: Number,
           ref: "Service"

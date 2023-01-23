@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-var timestamps = require('mongoose-unix-timestamp-plugin');
 
 module.exports = (connection, autoIncrement) => {
 
@@ -21,7 +20,6 @@ module.exports = (connection, autoIncrement) => {
     }
   })
   
-  CategorySchema.plugin(timestamps)
   CategorySchema.plugin(autoIncrement.plugin, "Category")
   
   const Category = connection.model(

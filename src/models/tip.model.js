@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const timestamps = require('mongoose-timestamp');
 
 
 module.exports = (connection, autoIncrement) => {
@@ -18,7 +17,6 @@ module.exports = (connection, autoIncrement) => {
     }
   });
   TipSchema.plugin(autoIncrement.plugin, "Tip")
-  TipSchema.plugin(timestamps);
 
   const Tip = connection.model(
     "Tip",
