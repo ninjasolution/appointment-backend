@@ -35,6 +35,16 @@ module.exports = (connection, autoIncrement) => {
     description: {
       type: String
     },
+    color: {
+      type: String
+    },
+    note: {
+      type: String
+    },
+    enableAddButton: {
+      type: Boolean,
+      default: false
+    },
     user: {
       type: Number,
       ref: "User"

@@ -4,7 +4,7 @@ module.exports = (connection, autoIncrement) => {
 
   const CategoryTypeSchema = new mongoose.Schema({
     name: {
-      type: String,
+      type: String, //[product, service]
       unique: true
     }
   })

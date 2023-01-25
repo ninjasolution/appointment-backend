@@ -16,11 +16,11 @@ module.exports = (connection, autoIncrement) => {
       type: Number,
       ref: "Service"
     }],
-    enableLimit: {
-      type: Boolean,
-      default: false
+    type: {
+      type: Number,
+      default: 0
     },
-    numberOfSession: {
+    CountOfSale: {
       type: Number,
       default: 0
     },
@@ -37,7 +37,7 @@ module.exports = (connection, autoIncrement) => {
     color: {
       type: String
     },
-    enableOnlineSale: {
+    enableOnline: {
       type: Boolean,
       default: false
     },

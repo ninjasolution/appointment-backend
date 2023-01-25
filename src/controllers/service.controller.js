@@ -6,7 +6,8 @@ exports.create = (req, res) => {
   const service = new Service({
     name: req.body.name,
     user: req.userId,
-    treatment: req.body.treatment,
+    treatment: req.body.treatmentId,
+    category: req.body.categoryId,
     description: req.body.description,
     aftercareDescription: req.body.userId,
     target: req.body.target,
@@ -16,10 +17,10 @@ exports.create = (req, res) => {
     extraTime: req.body.extraTime,
     tax: req.body.taxId,
     enableVoucherSale: req.body.enableVoucherSale,
-    voucherExpierPeriod: req.body.voucherExpierPeriod,
-    enableMemberCommission: req.body.enableMemberCommission,
-    enableUpsell: req.body.enableUpsell,
-    upsellServices: req.body.upsellServiceIds,
+    voucherExpirePeriod: req.body.voucherExpirePeriod,
+    enableCommission: req.body.enableCommission,
+    enableUpSell: req.body.enableUpSell,
+    services: req.body.serviceIds,
     discountPercent: req.body.discountPercent,
   })
 

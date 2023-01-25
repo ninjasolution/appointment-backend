@@ -14,6 +14,9 @@ exports.create = (req, res) => {
     duration: req.body.duration,
     title: req.body.title,
     description: req.body.description,
+    enableAddButton: req.body.enableAddButton,
+    color: req.body.color,
+    note: req.body.note
   })
 
   voucher.save(async (err, _voucher) => {

@@ -22,6 +22,10 @@ module.exports = (connection, autoIncrement) => {
       type: String,
       ref: "Brand"
     },
+    measure: {
+      type: String,
+      ref: "Measure"
+    },
     shortDescription: {
       type: String
     },
@@ -48,11 +52,14 @@ module.exports = (connection, autoIncrement) => {
     specialPrice: {
       type: Number
     },
+    markupPrice: {
+      type: Number
+    },
     enableRetailSale: {
       type: Boolean,
       default: false
     },
-    enableMemberCommission: {
+    enableCommission: {
       type: Boolean,
       default: false
     },

@@ -17,6 +17,10 @@ module.exports = (connection, autoIncrement) => {
       type: Number,
       ref: "Treatment"
     },
+    category: {
+      type: Number,
+      ref: "Category"
+    },
     description: {
       type: String
     },
@@ -49,19 +53,19 @@ module.exports = (connection, autoIncrement) => {
       type: Boolean,
       default: false
     },
-    voucherExpierPeriod: {
+    voucherExpirePeriod: {
       type: Number,
       default: 0
     },
-    enableMemberCommission: {
+    enableCommission: {
       type: Boolean,
       default: false
     },
-    enableUpsell: {
+    enableUpSell: {
       type: Boolean,
       default: false
     },
-    upsellServices: [{
+    services: [{
       type: Number,
       ref: "Service"
     }],

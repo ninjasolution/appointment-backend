@@ -8,13 +8,13 @@ exports.create = (req, res) => {
     user: req.userId,
     description: req.body.description,
     services: req.body.serviceIds,
-    enableLimit: req.body.enableLimit,
-    numberOfSession: req.body.numberOfSession,
+    type: req.body.type,
+    CountOfSale: req.body.CountOfSale,
     duration: req.body.duration,
     price: req.body.price,
     tax: req.body.taxId,
     color: req.body.color,
-    enableOnlineSale: req.body.enableOnlineSale,
+    enableOnline: req.body.enableOnline,
     condition: req.body.condition,
   })
 

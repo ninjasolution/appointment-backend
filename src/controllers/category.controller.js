@@ -1,25 +1,35 @@
 const db = require("../models");
 const Category = db.category;
+const CategoryType = db.categoryType;
 const config = require("../config/index");
 
 exports.create = (req, res) => {
-  const category = new Category({
-    name: req.body.name,
-    user: req.userId
-  })
 
-  category.save(async (err, _category) => {
+  CategoryType.findOne({name: req.body.type}, (err, type) => {
     if (err) {
-      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
-
-    return res.status(200).send({
-      message: config.RES_MSG_SAVE_SUCCESS,
-      data: _category,
-      status: config.RES_STATUS_SUCCESS,
+    const category = new Category({
+      name: req.body.name,
+      user: req.userId,
+      type: type._id
+    })
+  
+    category.save(async (err, _category) => {
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+  
+      return res.status(200).send({
+        message: config.RES_MSG_SAVE_SUCCESS,
+        data: _category,
+        status: config.RES_STATUS_SUCCESS,
+      });
     });
-  });
+  })
+  
 }
 
 exports.getAll = (req, res) => {
@@ -27,7 +37,7 @@ exports.getAll = (req, res) => {
     .exec((err, categories) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 

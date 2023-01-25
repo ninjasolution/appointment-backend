@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
       status: req.body.status,
       type: req.body.type,
       user: req.userId,
-      to: req.body.supplier
+      to: req.body.supplierId
     })
 
     await order.save();
