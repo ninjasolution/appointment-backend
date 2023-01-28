@@ -1,6 +1,7 @@
 const db = require("../models");
 const service = require("../service");
 const User = db.user;
+const Role = db.role;
 const config = require("../config")
 
 exports.setupFullName = (req, res) => {
@@ -21,7 +22,7 @@ exports.setupFullName = (req, res) => {
     user.country = req.body.country;
     user.save(async (err, _user) => {
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
   
@@ -59,7 +60,7 @@ exports.setupBusiness = (req, res) => {
     user.website = req.body.website;
     user.save(async (err, _user) => {
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
   
@@ -109,6 +110,40 @@ exports.addClient = async (req, res) => {
       return res.status(200).send({
         message: config.RES_MSG_SAVE_SUCCESS,
         data: _client,
+        status: config.RES_STATUS_SUCCESS
+      });
+    })
+  });
+}
+
+exports.addSupplier = async (req, res) => {
+
+  const SupplierRole = await Role.findOne({name: config.ROLE_SUPPLIER})
+  const supplier = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    info: req.body.info,
+    roles: [ SupplierRole._id ]
+  })
+
+  supplier.save( (err, _supplier) => {
+
+    if (err) {
+      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      return;
+    }
+
+    User.updateOne({_id: req.userId}, {$push: {suppliers: _supplier._id}})
+    .exec((err, user) => {
+
+      if (err) {
+      res.status(500).send({ message: err, status: config.RES_MSG_UPDATE_FAIL });
+        return;
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_SAVE_SUCCESS,
+        data: _supplier,
         status: config.RES_STATUS_SUCCESS
       });
     })
@@ -178,7 +213,11 @@ exports.allUsers = (req, res) => {
 
 exports.getUser = (req, res) => {
   User.findOne({ _id: req.params.id })
-    .populate('roles')
+    .populate('roles', "-__v -users")
+    .populate('services', "-__v")
+    .populate('clients', "-__v")
+    .populate('members', "-__v")
+    .populate('suppliers', "-__v")
     .exec((err, user) => {
 
       if (err) {

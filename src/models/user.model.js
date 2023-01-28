@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 var timestamps = require('mongoose-unix-timestamp-plugin');
 
+
 module.exports = (connection, autoIncrement) => {
 
   const UserSchema = new mongoose.Schema({

@@ -6,7 +6,6 @@ module.exports = (connection, autoIncrement) => {
   const TaxSchema = new mongoose.Schema({
     name: {
       type: String,
-      unique: true
     },
     percent: {
       type: Number

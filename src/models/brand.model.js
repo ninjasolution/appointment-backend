@@ -5,7 +5,6 @@ module.exports = (connection, autoIncrement) => {
   const BrandSchema = new mongoose.Schema({
     name: {
       type: String,
-      unique: true
     },
     user: {
       type: Number,

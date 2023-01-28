@@ -4,7 +4,7 @@ const AppointmentItem = db.appointmentItem;
 const config = require("../config/index")
 
 exports.create = (req, res) => {
-  if(req.body.appointments?.length && req.body.appointments.length < 1) {
+  if (req.body.appointments?.length && req.body.appointments.length < 1) {
     if (err) {
       res.status(400).send({ message: config.RES_MSG_INVALID_REQUEST, status: config.RES_STATUS_FAIL });
       return;
@@ -25,7 +25,7 @@ exports.create = (req, res) => {
 
     var items = [];
 
-    for(let i=0 ; i<req.body.appointments.length ; i++) {
+    for (let i = 0; i < req.body.appointments.length; i++) {
       const item = new AppointmentItem({
         startTime: req.body.appointments[i].startTime,
         service: req.body.appointments[i].serviceId,
@@ -36,7 +36,7 @@ exports.create = (req, res) => {
       await item.save();
       items.push(item._id);
     }
-  
+
     appointment.items = items;
     await appointment.save();
 
@@ -59,14 +59,14 @@ exports.getAll = (req, res) => {
     user: req.userId,
   }
 
-  if(req.query.from) {
+  if (req.query.from) {
     query.$gte = { createdAt: req.query.from };
   }
 
-  if(req.query.from) {
+  if (req.query.from) {
     query.$lte = { createdAt: req.query.to };
   }
-  
+
   AppointmentItem.find(query)
     .populate('appointment', "-__v -items")
     .populate('member', "name _id")
@@ -74,7 +74,7 @@ exports.getAll = (req, res) => {
     .exec((err, appointments) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 
@@ -110,15 +110,15 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   Appointment.deleteOne({ _id: req.params.id })
-  .exec((err) => {
+    .exec((err) => {
 
-    if (err) {
-      res.status(500).send({ message: err, status: config.RES_MSG_DELETE_FAIL });
-      return;
-    }
-    return res.status(200).send({
-      message: config.RES_MSG_DELETE_SUCCESS,
-      status: config.RES_STATUS_SUCCESS,
-    });
-  })
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_MSG_DELETE_FAIL });
+        return;
+      }
+      return res.status(200).send({
+        message: config.RES_MSG_DELETE_SUCCESS,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
 };

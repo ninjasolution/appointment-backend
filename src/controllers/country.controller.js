@@ -30,7 +30,7 @@ exports.getAll = (req, res) => {
     .exec((err, countries) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 

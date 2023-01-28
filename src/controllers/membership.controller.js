@@ -50,11 +50,10 @@ exports.getAll = (req, res) => {
   if(req.query.from) {
     query.$lte = { createdAt: req.query.to };
   }
-  Membership.paginate(query, options)
-    .exec((err, memberships) => {
+  Membership.paginate(query, options, (err, memberships) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 
@@ -64,7 +63,7 @@ exports.getAll = (req, res) => {
 
       return res.status(200).send({
         message: config.RES_MSG_DATA_FOUND,
-        data: memberships,
+        data: memberships.docs,
         status: config.RES_STATUS_SUCCESS,
       });
     })

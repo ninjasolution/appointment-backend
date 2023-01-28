@@ -30,10 +30,11 @@ router.put("/auth/rest", authController.changePassword)
 router.post("/user/full-name", middlewares.authJwt.verifyToken, userController.setupFullName);
 router.post("/user/business", middlewares.authJwt.verifyToken, userController.setupBusiness);
 router.post("/user/client", middlewares.authJwt.verifyToken, userController.addClient);
+router.post("/user/supplier", middlewares.authJwt.verifyToken, userController.addSupplier);
 router.post("/user/member", middlewares.authJwt.verifyToken, userController.addMember);
 router.get("/user", middlewares.authJwt.verifyToken, userController.allUsers);
 router.get("/user/check-verification", middlewares.authJwt.verifyToken, userController.checkVerification);
-router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.getUser);
+router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken], userController.getUser);
 router.put("/user", middlewares.authJwt.verifyToken, userController.update);
 router.delete("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.delete);
 

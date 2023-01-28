@@ -61,11 +61,10 @@ exports.getAll = (req, res) => {
     query.$lte = { createdAt: req.query.to };
   }
   
-  Transaction.paginate(query, options)
-    .exec((err, transactions) => {
+  Transaction.paginate(query, options, (err, transactions) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 
@@ -75,7 +74,7 @@ exports.getAll = (req, res) => {
 
       return res.status(200).send({
         message: config.RES_MSG_DATA_FOUND,
-        data: transactions,
+        data: transactions.docs,
         status: config.RES_STATUS_SUCCESS,
       });
     })

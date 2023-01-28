@@ -10,6 +10,11 @@ exports.create = (req, res) => {
       res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
+
+    if(type == null) {
+      res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_FAIL });
+      return;
+    }
     const category = new Category({
       name: req.body.name,
       user: req.userId,

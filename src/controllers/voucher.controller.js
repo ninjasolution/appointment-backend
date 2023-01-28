@@ -39,11 +39,10 @@ exports.getAll = (req, res) => {
     page: req.query.page || 0,
     limit: req.query.limit || 10,
   };
-  Voucher.paginate({user: req.userId}, options)
-    .exec((err, vouchers) => {
+  Voucher.paginate({user: req.userId}, options, (err, vouchers) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 

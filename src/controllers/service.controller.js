@@ -9,7 +9,7 @@ exports.create = (req, res) => {
     treatment: req.body.treatmentId,
     category: req.body.categoryId,
     description: req.body.description,
-    aftercareDescription: req.body.userId,
+    aftercareDescription: req.body.aftercareDescription,
     target: req.body.target,
     members: req.body.memberIds,
     enableOnline: req.body.enableOnline,
@@ -26,7 +26,7 @@ exports.create = (req, res) => {
 
   service.save(async (err, _service) => {
     if (err) {
-      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
 
@@ -44,24 +44,23 @@ exports.getAll = (req, res) => {
     page: req.query.page || 0,
     limit: req.query.limit || 10,
   };
-  Service.paginate({user: req.userId}, options)
-    .exec((err, services) => {
+  Service.paginate({ user: req.userId }, options, (err, services) => {
 
-      if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
-        return;
-      }
+    if (err) {
+      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      return;
+    }
 
-      if (!services) {
-        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND });
-      }
+    if (!services) {
+      return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND });
+    }
 
-      return res.status(200).send({
-        message: config.RES_MSG_DATA_FOUND,
-        data: services,
-        status: config.RES_STATUS_SUCCESS,
-      });
-    })
+    return res.status(200).send({
+      message: config.RES_MSG_DATA_FOUND,
+      data: services,
+      status: config.RES_STATUS_SUCCESS,
+    });
+  })
 };
 
 exports.update = (req, res) => {

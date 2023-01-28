@@ -32,7 +32,8 @@ exports.create = (req, res) => {
 
   product.save(async (err, _product) => {
     if (err) {
-      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+      console.log(err)
+      res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
       return;
     }
 
@@ -48,14 +49,13 @@ exports.getAll = (req, res) => {
 
   var options = {
     sort: { createdAt: -1 },
-    page: req.query.page || 0,
+    page: req.query.page || 1,
     limit: req.query.limit || 10,
   };
-  Product.paginate({user: req.userId}, options)
-    .exec((err, products) => {
+  Product.paginate({user: req.userId}, options, (err, products) => {
 
       if (err) {
-        res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         return;
       }
 

@@ -7,7 +7,6 @@ module.exports = (connection, autoIncrement) => {
   const VoucherSchema = new mongoose.Schema({
     name: {
       type: String,
-      unique: true
     },
     value: {
       type: Number
