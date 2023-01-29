@@ -15,7 +15,9 @@ const serviceController = require("../controllers/service.controller");
 const treatmentController = require("../controllers/treatment.controller");
 const fileController = require("../controllers/file.controller");
 const voucherController = require("../controllers/voucher.controller");
+const transactionController = require("../controllers/transaction.controller");
 const appointmentController = require("../controllers/appointment.controller");
+const orderController = require("../controllers/order.controller");
 
 router.post("/auth/signup", [middlewares.verifySignUp.checkRolesExisted], authController.signup)
 router.post("/auth/signin", authController.signin)
@@ -39,7 +41,7 @@ router.post("/user/supplier", middlewares.authJwt.verifyToken, userController.ad
 router.post("/user/member", middlewares.authJwt.verifyToken, userController.addMember);
 router.get("/user", middlewares.authJwt.verifyToken, userController.allUsers);
 router.get("/user/check-verification", middlewares.authJwt.verifyToken, userController.checkVerification);
-router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken], userController.getUser);
+router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken], userController.getById);
 router.put("/user/role/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.setRole);
 router.put("/user", middlewares.authJwt.verifyToken, userController.update);
 router.delete("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.delete);
@@ -104,5 +106,17 @@ router.get("/appointment", middlewares.authJwt.verifyToken, appointmentControlle
 router.get("/appointment/:id([0-9]+)", middlewares.authJwt.verifyToken, appointmentController.getById);
 router.put("/appointment/:id([0-9]+)", middlewares.authJwt.verifyToken, appointmentController.update);
 router.delete("/appointment/:id([0-9]+)", [middlewares.authJwt.verifyToken], appointmentController.delete);
+
+router.post("/transaction", middlewares.authJwt.verifyToken, transactionController.create);
+router.get("/transaction", middlewares.authJwt.verifyToken, transactionController.getAll);
+router.get("/transaction/:id([0-9]+)", middlewares.authJwt.verifyToken, transactionController.getById);
+router.put("/transaction/:id([0-9]+)", middlewares.authJwt.verifyToken, transactionController.update);
+router.delete("/transaction/:id([0-9]+)", [middlewares.authJwt.verifyToken], transactionController.delete);
+
+router.post("/order", middlewares.authJwt.verifyToken, orderController.create);
+router.get("/order", middlewares.authJwt.verifyToken, orderController.getAll);
+router.get("/order/:id([0-9]+)", middlewares.authJwt.verifyToken, orderController.getById);
+router.put("/order/:id([0-9]+)", middlewares.authJwt.verifyToken, orderController.getById);
+router.delete("/order/:id([0-9]+)", [middlewares.authJwt.verifyToken], orderController.delete);
 
 module.exports = router;

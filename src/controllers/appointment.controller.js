@@ -57,7 +57,7 @@ exports.create = (req, res) => {
 exports.getAll = (req, res) => {
 
   var query = {
-    // "appointment.user": req.userId,
+    "user": req.userId,
   }
 
   // if (req.query.from) {
@@ -68,10 +68,8 @@ exports.getAll = (req, res) => {
   //   query.$lte = { createdAt: req.query.to };
   // }
 
-  Appointment.find({})
-    // .populate('appointment')
-    // .populate('member', "name _id")
-    // .populate('service', "name _id")
+  Appointment.find(query)
+    .populate('items')
     .exec((err, appointments) => {
 
       if (err) {
@@ -95,8 +93,8 @@ exports.getById = (req, res) => {
 
   Appointment.findOne({ _id: req.params.id })
     .populate('items')
-    .populate('user', "name _id")
-    .populate('client', "name _id")
+    .populate('user', "firstName lastName _id")
+    .populate('client', "firstName lastName _id")
     .exec((err, appointment) => {
 
       if (err) {

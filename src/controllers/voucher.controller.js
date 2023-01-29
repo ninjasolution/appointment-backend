@@ -60,9 +60,9 @@ exports.getAll = (req, res) => {
 
 exports.getById = (req, res) => {
  
-  Voucher.find({_id: req.params.id})
+  Voucher.findOne({_id: req.params.id})
     .populate('services', "-__v")
-    .populate('user', "name _id")
+    .populate('user', "firstName lastName _id")
     .exec((err, voucher) => {
 
       if (err) {

@@ -79,6 +79,32 @@ exports.getAll = (req, res) => {
     })
 };
 
+exports.getById = (req, res) => {
+ 
+  Order.findOne({_id: req.params.id})
+    .populate('carts')
+    .populate('user', "-__v")
+    .populate('to', "-__v")
+    .exec((err, order) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!order) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: order,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
+
 exports.update = (req, res) => {
   Order.updateOne({ _id: req.params.id }, req.body)
     .exec(async (err, brand) => {

@@ -17,7 +17,7 @@ module.exports = (connection, autoIncrement) => {
     },
     appointment: {
       type: Number,
-      ref: "appointment"
+      ref: "Appointment"
     }
   });
 

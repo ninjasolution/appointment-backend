@@ -73,7 +73,7 @@ exports.getAll = (req, res) => {
 
 exports.getById = (req, res) => {
  
-  Product.find({_id: req.params.id})
+  Product.findOne({_id: req.params.id})
     .populate('treatment', "-__v")
     .populate('brand', "-__v")
     .populate('measure', "-__v")
@@ -81,7 +81,7 @@ exports.getById = (req, res) => {
     .populate('currency', "-__v")
     .populate('tax', "-__v")
     .populate('supplier', "-__v")
-    .populate('user', "name _id")
+    .populate('user', "firstName lastName _id")
     .exec((err, product) => {
 
       if (err) {

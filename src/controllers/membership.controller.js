@@ -74,7 +74,7 @@ exports.getById = (req, res) => {
   Membership.find({_id: req.params.id})
     .populate('services', "-__v")
     .populate('tax', "-__v")
-    .populate('user', "name _id")
+    .populate('user', "firstName lastName _id")
     .exec((err, membership) => {
 
       if (err) {

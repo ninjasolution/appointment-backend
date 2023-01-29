@@ -65,13 +65,13 @@ exports.getAll = (req, res) => {
 
 exports.getById = (req, res) => {
  
-  Service.find({_id: req.params.id})
+  Service.findOne({_id: req.params.id})
     .populate('treatment', "-__v")
     .populate('category', "-__v")
     .populate('services', "-__v")
     .populate('members', "-__v")
     .populate('tax', "-__v")
-    .populate('user', "name _id")
+    .populate('user', "firstName lastName _id")
     .exec((err, service) => {
 
       if (err) {

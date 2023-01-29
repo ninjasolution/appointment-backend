@@ -80,6 +80,35 @@ exports.getAll = (req, res) => {
   })
 };
 
+exports.getById = (req, res) => {
+ 
+  Transaction.findOne({_id: req.params.id})
+    .populate('product', "-__v")
+    .populate('service', "-__v")
+    .populate('membership', "-__v")
+    .populate('voucher', "-__v")
+    .populate('user', "-__v")
+    .populate('client', "-__v")
+    .exec((err, transaction) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!transaction) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: transaction,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
+
 exports.update = (req, res) => {
   Transaction.updateOne({ _id: req.params.id }, req.body)
     .exec(async (err, transaction) => {

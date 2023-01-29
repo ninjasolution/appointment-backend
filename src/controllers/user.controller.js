@@ -210,7 +210,7 @@ exports.allUsers = (req, res) => {
 };
 
 
-exports.getUser = (req, res) => {
+exports.getById = (req, res) => {
   User.findOne({ _id: req.params.id })
     .populate('roles', "-__v -users")
     .populate('services', "-__v")
