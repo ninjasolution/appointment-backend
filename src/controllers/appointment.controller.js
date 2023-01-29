@@ -4,73 +4,74 @@ const AppointmentItem = db.appointmentItem;
 const config = require("../config/index")
 
 exports.create = (req, res) => {
-  if (req.body.appointments?.length && req.body.appointments.length < 1) {
-    if (err) {
-      res.status(400).send({ message: config.RES_MSG_INVALID_REQUEST, status: config.RES_STATUS_FAIL });
-      return;
+  try {
+
+    if (req.body.appointments?.length && req.body.appointments.length < 1) {
+      if (err) {
+        res.status(500).send({ message: config.RES_MSG_INVALID_REQUEST, status: config.RES_STATUS_FAIL });
+        return;
+      }
     }
-  }
-  const appointment = new Appointment({
-    note: req.body.note,
-    status: req.body.status,
-    user: req.userId,
-    client: req.body.clientId
-  })
+    const appointment = new Appointment({
+      note: req.body.note,
+      status: req.body.status,
+      user: req.userId,
+      client: req.body.clientId
+    })
 
-  appointment.save(async (err, _appointment) => {
-    if (err) {
-      res.status(400).send({ message: err, status: config.RES_STATUS_FAIL });
-      return;
-    }
+    appointment.save(async (err, _appointment) => {
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
 
-    var items = [];
+      var items = [];
 
-    for (let i = 0; i < req.body.appointments.length; i++) {
-      const item = new AppointmentItem({
-        startTime: req.body.appointments[i].startTime,
-        service: req.body.appointments[i].serviceId,
-        duration: req.body.appointments[i].duration,
-        member: req.body.appointments[i].memberId,
-        appointment: appointment._id,
-      })
-      await item.save();
-      items.push(item._id);
-    }
+      for (let i = 0; i < req.body.appointments.length; i++) {
+        var item = new AppointmentItem({
+          startTime: new Date(req.body.appointments[i].startTime),
+          service: req.body.appointments[i].serviceId,
+          duration: req.body.appointments[i].duration,
+          member: req.body.appointments[i].memberId,
+          appointment: _appointment._id,
+        })
+        item = await item.save();
+        items.push(item._id);
+      }
 
-    appointment.items = items;
-    await appointment.save();
+      _appointment.items = items;
+      await _appointment.save();
 
-    return res.status(200).send({
-      message: config.RES_MSG_SAVE_SUCCESS,
-      data: _appointment,
-      status: config.RES_STATUS_SUCCESS,
+      return res.status(200).send({
+        message: config.RES_MSG_SAVE_SUCCESS,
+        data: _appointment,
+        status: config.RES_STATUS_SUCCESS,
+      });
     });
-  });
+  } catch (err) {
+    res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+    return;
+  }
 }
 
 exports.getAll = (req, res) => {
-  var options = {
-    sort: { createdAt: -1 },
-    page: req.query.page || 0,
-    limit: req.query.limit || 10,
-  };
 
   var query = {
-    user: req.userId,
+    // "appointment.user": req.userId,
   }
 
-  if (req.query.from) {
-    query.$gte = { createdAt: req.query.from };
-  }
+  // if (req.query.from) {
+  //   query.$gte = { createdAt: req.query.from };
+  // }
 
-  if (req.query.from) {
-    query.$lte = { createdAt: req.query.to };
-  }
+  // if (req.query.from) {
+  //   query.$lte = { createdAt: req.query.to };
+  // }
 
-  AppointmentItem.find(query)
-    .populate('appointment', "-__v -items")
-    .populate('member', "name _id")
-    .populate('service', "name _id")
+  Appointment.find({})
+    // .populate('appointment')
+    // .populate('member', "name _id")
+    // .populate('service', "name _id")
     .exec((err, appointments) => {
 
       if (err) {
@@ -85,6 +86,31 @@ exports.getAll = (req, res) => {
       return res.status(200).send({
         message: config.RES_MSG_DATA_FOUND,
         data: appointments,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
+exports.getById = (req, res) => {
+
+  Appointment.findOne({ _id: req.params.id })
+    .populate('items')
+    .populate('user', "name _id")
+    .populate('client', "name _id")
+    .exec((err, appointment) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!appointment) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: appointment,
         status: config.RES_STATUS_SUCCESS,
       });
     })

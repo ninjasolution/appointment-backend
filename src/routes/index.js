@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require('multer');
 const router = express.Router();
 const middlewares = require("../middlewares")
 const authController = require("../controllers/auth.controller");
@@ -12,20 +13,24 @@ const membershipController = require("../controllers/membership.controller");
 const productController = require("../controllers/product.controller");
 const serviceController = require("../controllers/service.controller");
 const treatmentController = require("../controllers/treatment.controller");
+const fileController = require("../controllers/file.controller");
 const voucherController = require("../controllers/voucher.controller");
 const appointmentController = require("../controllers/appointment.controller");
-const service = require("../service");
 
 router.post("/auth/signup", [middlewares.verifySignUp.checkRolesExisted], authController.signup)
 router.post("/auth/signin", authController.signin)
-router.post("/auth/signout", authController.signout)
-router.get("/auth/verifyEmail/:id/:token", authController.verifyEmail)
-router.get("/auth/verifyPhoneNumber/:id/:token", authController.verifyPhoneNumber)
-router.post("/auth/forgot", authController.forgot)
-router.get("/auth/requestEmailVerify", middlewares.authJwt.verifyToken, authController.requestEmailVerify)
-router.get("/auth/requestPhoneVerify", middlewares.authJwt.verifyToken, authController.requestPhoneVerify)
-router.get("/auth/rest/:token", authController.reset)
-router.put("/auth/rest", authController.changePassword)
+router.post("/auth/signout", middlewares.authJwt.verifyToken, authController.signout)
+router.get("/auth/verify-email/:token", middlewares.authJwt.verifyToken, authController.verifyEmail)
+router.get("/auth/verifyPhoneNumber/:token", middlewares.authJwt.verifyToken, authController.verifyPhoneNumber)
+router.get("/auth/forgot/:email", authController.forgot)
+router.get("/auth/request-email-verify", middlewares.authJwt.verifyToken, authController.requestEmailVerify)
+router.get("/auth/request-phone-verify", middlewares.authJwt.verifyToken, authController.requestPhoneVerify)
+router.get("/auth/rest-password/:token", authController.reset)
+router.put("/auth/password", authController.changePassword)
+
+router.get("/file/avatar/:fileName", fileController.upload.single('file'),  fileController.get)
+router.delete("/file/avatar/:fileName", fileController.upload.single('file'),  fileController.delete)
+router.post("/file/avatar", fileController.upload.single('file'),  fileController.create)
 
 router.post("/user/full-name", middlewares.authJwt.verifyToken, userController.setupFullName);
 router.post("/user/business", middlewares.authJwt.verifyToken, userController.setupBusiness);
@@ -35,6 +40,7 @@ router.post("/user/member", middlewares.authJwt.verifyToken, userController.addM
 router.get("/user", middlewares.authJwt.verifyToken, userController.allUsers);
 router.get("/user/check-verification", middlewares.authJwt.verifyToken, userController.checkVerification);
 router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken], userController.getUser);
+router.put("/user/role/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.setRole);
 router.put("/user", middlewares.authJwt.verifyToken, userController.update);
 router.delete("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewares.authJwt.isAdmin], userController.delete);
 
@@ -65,16 +71,19 @@ router.delete("/measure/:id([0-9]+)", [middlewares.authJwt.verifyToken, middlewa
 
 router.post("/membership", middlewares.authJwt.verifyToken, membershipController.create);
 router.get("/membership", middlewares.authJwt.verifyToken, membershipController.getAll);
+router.get("/membership/:id([0-9]+)", middlewares.authJwt.verifyToken, membershipController.getById);
 router.put("/membership/:id([0-9]+)", middlewares.authJwt.verifyToken, membershipController.update);
 router.delete("/membership/:id([0-9]+)", [middlewares.authJwt.verifyToken], membershipController.delete);
 
 router.post("/product", middlewares.authJwt.verifyToken, productController.create);
 router.get("/product", middlewares.authJwt.verifyToken, productController.getAll);
+router.get("/product/:id([0-9]+)", middlewares.authJwt.verifyToken, productController.getById);
 router.put("/product/:id([0-9]+)", middlewares.authJwt.verifyToken, productController.update);
 router.delete("/product/:id([0-9]+)", [middlewares.authJwt.verifyToken], productController.delete);
 
 router.post("/service", middlewares.authJwt.verifyToken, serviceController.create);
 router.get("/service", middlewares.authJwt.verifyToken, serviceController.getAll);
+router.get("/service/:id([0-9]+)", middlewares.authJwt.verifyToken, serviceController.getById);
 router.put("/service/:id([0-9]+)", middlewares.authJwt.verifyToken, serviceController.update);
 router.delete("/service/:id([0-9]+)", [middlewares.authJwt.verifyToken], serviceController.delete);
 
@@ -86,11 +95,13 @@ router.delete("/treatment/:id([0-9]+)", [middlewares.authJwt.verifyToken], treat
 
 router.post("/voucher", middlewares.authJwt.verifyToken, voucherController.create);
 router.get("/voucher", middlewares.authJwt.verifyToken, voucherController.getAll);
+router.get("/voucher/:id([0-9]+)", middlewares.authJwt.verifyToken, voucherController.getById);
 router.put("/voucher/:id([0-9]+)", middlewares.authJwt.verifyToken, voucherController.update);
 router.delete("/voucher/:id([0-9]+)", [middlewares.authJwt.verifyToken], voucherController.delete);
 
 router.post("/appointment", middlewares.authJwt.verifyToken, appointmentController.create);
 router.get("/appointment", middlewares.authJwt.verifyToken, appointmentController.getAll);
+router.get("/appointment/:id([0-9]+)", middlewares.authJwt.verifyToken, appointmentController.getById);
 router.put("/appointment/:id([0-9]+)", middlewares.authJwt.verifyToken, appointmentController.update);
 router.delete("/appointment/:id([0-9]+)", [middlewares.authJwt.verifyToken], appointmentController.delete);
 

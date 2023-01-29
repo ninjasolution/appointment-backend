@@ -36,7 +36,7 @@ exports.create = (req, res) => {
 exports.getAll = (req, res) => {
   var options = {
     sort: { createdAt: -1 },
-    page: req.query.page || 0,
+    page: req.query.page|| 1,
     limit: req.query.limit || 10,
   };
   Voucher.paginate({user: req.userId}, options, (err, vouchers) => {
@@ -57,6 +57,31 @@ exports.getAll = (req, res) => {
       });
     })
 };
+
+exports.getById = (req, res) => {
+ 
+  Voucher.find({_id: req.params.id})
+    .populate('services', "-__v")
+    .populate('user', "name _id")
+    .exec((err, voucher) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!voucher) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: voucher,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
 
 exports.update = (req, res) => {
   Voucher.updateOne({ _id: req.params.id }, req.body)

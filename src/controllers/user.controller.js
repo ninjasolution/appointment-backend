@@ -1,5 +1,4 @@
 const db = require("../models");
-const service = require("../service");
 const User = db.user;
 const Role = db.role;
 const config = require("../config")
@@ -19,7 +18,7 @@ exports.setupFullName = (req, res) => {
     user.firstName = req.body.firstName;
     user.lastName = req.body.lastName;
     user.phoneNumber = req.body.phoneNumber;
-    user.country = req.body.country;
+    user.country = req.body.countryId;
     user.save(async (err, _user) => {
       if (err) {
         res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
@@ -85,8 +84,8 @@ exports.addClient = async (req, res) => {
     phone: req.body.phone,
     secondPhone: req.body.secondPhone,
     gender: req.body.gender,
-    birthdate: req.body.birthdate,
-    birthyear: req.body.birthyear,
+    birthDate: req.body.birthDate,
+    birthYear: req.body.birthYear,
     info: req.body.info,
     address: req.body.address,
     roles: [ clientRole._id ]
@@ -296,17 +295,16 @@ exports.setRole = (req, res) => {
       }
 
       if (!user) {
-        return res.status(404).send({ data: "Orders Not found.", status: config.RES_STATUS_FAIL });
+        return res.status(404).send({ data: "Role Not found.", status: config.RES_STATUS_FAIL });
       }
 
       Role
-        .find({ name: req.params.role },
+        .find({ name: req.body.role },
           (err, roles) => {
             if (err) {
               return;
             }
             user.roles = roles.map(role => role._id);
-            user.adminType = req.params.type
             user.save(err => {
               if (err) {
                 return;

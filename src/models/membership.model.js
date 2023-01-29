@@ -17,7 +17,7 @@ module.exports = (connection, autoIncrement) => {
       ref: "Service"
     }],
     type: {
-      type: Number,
+      type: Number, //limit, unlimit
       default: 0
     },
     CountOfSale: {

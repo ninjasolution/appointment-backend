@@ -30,7 +30,8 @@ module.exports = (connection, autoIncrement) => {
       type: Number
     },
     country: {
-      type: String
+      type: Number,
+      ref: "Country"
     },
     location: {
       type: String
@@ -53,10 +54,10 @@ module.exports = (connection, autoIncrement) => {
     avatar: {
       type: String
     },
-    birthdate: {
+    birthDate: {
       type: String
     },
-    birthyear: {
+    birthYear: {
       type: Number
     },
     status: {

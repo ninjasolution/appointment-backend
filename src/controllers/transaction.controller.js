@@ -11,8 +11,8 @@ exports.create = async (req, res) => {
     type: req.body.type,
     user: req.userId,
     payment: req.body.payment,
-    tip: req.body.tip,
-    client: req.body.client
+    tip: req.body.tipId,
+    client: req.body.clientId
   })
 
   switch (req.body.type) {
@@ -45,7 +45,7 @@ exports.getAll = (req, res) => {
 
   var options = {
     sort: { date: -1 },
-    page: req.query.page || 0,
+    page: req.query.page|| 1,
     limit: req.query.limit || 10,
   };
 
@@ -53,31 +53,31 @@ exports.getAll = (req, res) => {
     user: req.userId,
   }
 
-  if(req.query.from) {
+  if (req.query.from) {
     query.$gte = { createdAt: req.query.from };
   }
 
-  if(req.query.from) {
+  if (req.query.from) {
     query.$lte = { createdAt: req.query.to };
   }
-  
+
   Transaction.paginate(query, options, (err, transactions) => {
 
-      if (err) {
-        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
-        return;
-      }
+    if (err) {
+      res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+      return;
+    }
 
-      if (!transactions) {
-        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
-      }
+    if (!transactions) {
+      return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+    }
 
-      return res.status(200).send({
-        message: config.RES_MSG_DATA_FOUND,
-        data: transactions.docs,
-        status: config.RES_STATUS_SUCCESS,
-      });
-    })
+    return res.status(200).send({
+      message: config.RES_MSG_DATA_FOUND,
+      data: transactions.docs,
+      status: config.RES_STATUS_SUCCESS,
+    });
+  })
 };
 
 exports.update = (req, res) => {
@@ -99,15 +99,15 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   Transaction.deleteOne({ _id: req.params.id })
-  .exec((err) => {
+    .exec((err) => {
 
-    if (err) {
-      res.status(500).send({ message: err, status: config.RES_MSG_DELETE_FAIL });
-      return;
-    }
-    return res.status(200).send({
-      message: config.RES_MSG_DELETE_SUCCESS,
-      status: config.RES_STATUS_SUCCESS,
-    });
-  })
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_MSG_DELETE_FAIL });
+        return;
+      }
+      return res.status(200).send({
+        message: config.RES_MSG_DELETE_SUCCESS,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
 };

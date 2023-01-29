@@ -70,7 +70,7 @@ module.exports = (connection, autoIncrement) => {
       ref: "Service"
     }],
     discountPercent: {
-      type: "Number",
+      type: Number,
       percent: 0.0
     }
   })

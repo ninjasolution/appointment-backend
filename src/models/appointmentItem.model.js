@@ -22,7 +22,7 @@ module.exports = (connection, autoIncrement) => {
   });
 
   AppointmentItemSchema.plugin(autoIncrement.plugin, "AppointmentItem")
-  AppointmentItemSchema.plugin(timestamps);
+  // AppointmentItemSchema.plugin(timestamps);
   AppointmentItemSchema.plugin(mongoosePaginate);
 
   const AppointmentItem = connection.model(

@@ -41,7 +41,7 @@ exports.create = (req, res) => {
 exports.getAll = (req, res) => {
   var options = {
     sort: { createdAt: -1 },
-    page: req.query.page || 0,
+    page: req.query.page|| 1,
     limit: req.query.limit || 10,
   };
   Service.paginate({ user: req.userId }, options, (err, services) => {
@@ -62,6 +62,36 @@ exports.getAll = (req, res) => {
     });
   })
 };
+
+exports.getById = (req, res) => {
+ 
+  Service.find({_id: req.params.id})
+    .populate('treatment', "-__v")
+    .populate('category', "-__v")
+    .populate('services', "-__v")
+    .populate('members', "-__v")
+    .populate('tax', "-__v")
+    .populate('user', "name _id")
+    .exec((err, service) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!service) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: service,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
+
 
 exports.update = (req, res) => {
   Service.updateOne({ _id: req.params.id }, { name: req.body.name })

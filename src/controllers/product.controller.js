@@ -71,6 +71,38 @@ exports.getAll = (req, res) => {
     })
 };
 
+exports.getById = (req, res) => {
+ 
+  Product.find({_id: req.params.id})
+    .populate('treatment', "-__v")
+    .populate('brand', "-__v")
+    .populate('measure', "-__v")
+    .populate('category', "-__v")
+    .populate('currency', "-__v")
+    .populate('tax', "-__v")
+    .populate('supplier', "-__v")
+    .populate('user', "name _id")
+    .exec((err, product) => {
+
+      if (err) {
+        res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
+        return;
+      }
+
+      if (!product) {
+        return res.status(404).send({ message: config.RES_MSG_DATA_NOT_FOUND, status: config.RES_STATUS_SUCCESS });
+      }
+
+      return res.status(200).send({
+        message: config.RES_MSG_DATA_FOUND,
+        data: product,
+        status: config.RES_STATUS_SUCCESS,
+      });
+    })
+};
+
+
+
 exports.update = (req, res) => {
   Product.updateOne({ _id: req.params.id }, req.body)
     .exec((err, product) => {

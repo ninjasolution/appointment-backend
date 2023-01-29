@@ -22,7 +22,7 @@ module.exports = (connection, autoIncrement) => {
       default: 0
     },
     type: {
-      type: Number
+      type: Number //order, transfer, stocktake
     },
     user: {
       type: Number,

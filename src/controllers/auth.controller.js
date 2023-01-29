@@ -27,12 +27,20 @@ exports.signup = async (req, res) => {
       }
 
       user.roles = roles.map(role => role._id);
-      user.save(err => {
+      user.save((err, user) => {
         if (err) {
           return res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
         }
 
-        res.send(user);
+        var token = jwt.sign({ id: user._id }, authConfig.secret, {
+          expiresIn: 86400 // 24 hours
+        });
+
+        return res.status(200).send({
+          message: config.RES_MSG_SAVE_SUCCESS,
+          data: token,
+          status: config.RES_STATUS_SUCCESS
+        });
       });
     }
     );
@@ -137,7 +145,7 @@ exports.signin = (req, res) => {
 exports.verifyEmail = async (req, res) => {
   try {
     User.findOne({
-      _id: req.params.id
+      _id: req.userId
     })
       .populate("tokens", "-__v")
       .exec(async (err, user) => {
@@ -221,7 +229,7 @@ exports.signout = async (req, res) => {
 
 exports.forgot = async (req, res) => {
   const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
-  User.findOne({ email: req.body.email }, {}, async function (err, user) {
+  User.findOne({ email: req.params.email }, {}, async function (err, user) {
     if (err) {
       return res.status(500).send({ message: err, status: config.RES_STATUS_FAIL });
     }
