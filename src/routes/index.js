@@ -39,6 +39,10 @@ router.post("/user/business", middlewares.authJwt.verifyToken, userController.se
 router.post("/user/client", middlewares.authJwt.verifyToken, userController.addClient);
 router.post("/user/supplier", middlewares.authJwt.verifyToken, userController.addSupplier);
 router.post("/user/member", middlewares.authJwt.verifyToken, userController.addMember);
+router.get("/user/member", middlewares.authJwt.verifyToken, userController.getAllMember);
+router.get("/user/client", middlewares.authJwt.verifyToken, userController.getAllClients);
+router.get("/user/supplier", middlewares.authJwt.verifyToken, userController.getAllSuppliers);
+
 router.get("/user", middlewares.authJwt.verifyToken, userController.allUsers);
 router.get("/user/check-verification", middlewares.authJwt.verifyToken, userController.checkVerification);
 router.get("/user/:id([0-9]+)", [middlewares.authJwt.verifyToken], userController.getById);

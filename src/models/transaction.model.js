@@ -29,7 +29,8 @@ module.exports = (connection, autoIncrement) => {
       type: Object
     }],
     status: {
-      type: Number
+      type: Number,
+      default: 0
     },
     user: {
       type: Number,
@@ -40,6 +41,7 @@ module.exports = (connection, autoIncrement) => {
       ref: "User"
     }
   });
+  
   TransactionSchema.plugin(autoIncrement.plugin, "Transaction")
   TransactionSchema.plugin(timestamps);
   TransactionSchema.plugin(mongoosePaginate);

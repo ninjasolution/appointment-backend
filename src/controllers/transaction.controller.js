@@ -47,6 +47,13 @@ exports.getAll = (req, res) => {
     sort: { date: -1 },
     page: req.query.page|| 1,
     limit: req.query.limit || 10,
+    populate: [
+      {path: 'client', select: "firstName lastName _id"},
+      {path: 'product'},
+      {path: 'membership'},
+      {path: 'service'},
+      {path: 'user', select: "firstName lastName _id"}
+    ],
   };
 
   var query = {
@@ -87,8 +94,8 @@ exports.getById = (req, res) => {
     .populate('service', "-__v")
     .populate('membership', "-__v")
     .populate('voucher', "-__v")
-    .populate('user', "-__v")
-    .populate('client', "-__v")
+    .populate('user', "firstName lastName _id")
+    .populate('client', "firstName lastName _id")
     .exec((err, transaction) => {
 
       if (err) {

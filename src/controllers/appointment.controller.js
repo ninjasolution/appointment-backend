@@ -6,7 +6,7 @@ const config = require("../config/index")
 exports.create = (req, res) => {
   try {
 
-    if (req.body.appointments?.length && req.body.appointments.length < 1) {
+    if (req.body.appointments && req.body.appointments.length < 1) {
       if (err) {
         res.status(500).send({ message: config.RES_MSG_INVALID_REQUEST, status: config.RES_STATUS_FAIL });
         return;
@@ -57,7 +57,7 @@ exports.create = (req, res) => {
 exports.getAll = (req, res) => {
 
   var query = {
-    "user": req.userId,
+    "appointment.user": req.userId,
   }
 
   // if (req.query.from) {
@@ -68,8 +68,10 @@ exports.getAll = (req, res) => {
   //   query.$lte = { createdAt: req.query.to };
   // }
 
-  Appointment.find(query)
-    .populate('items')
+  AppointmentItem.find()
+    .populate({path: 'appointment', match: {"appointment.user": req.userId}, select: "-__v -items", populate: [{path: "user", select: "firstName lastName _id"}, {path: "client", select: "firstName lastName _id"}]})
+    .populate('member', "firstName lastName _id")
+    .populate('service', "name _id")
     .exec((err, appointments) => {
 
       if (err) {
@@ -92,7 +94,11 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
 
   Appointment.findOne({ _id: req.params.id })
-    .populate('items')
+    .populate({path: 'items', model: "AppointmentItem", populate: [{
+      path: "member", select: "firstName lastName"
+    }, {
+      path: "service", select: "name"
+    }]})
     .populate('user', "firstName lastName _id")
     .populate('client', "firstName lastName _id")
     .exec((err, appointment) => {

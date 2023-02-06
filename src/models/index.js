@@ -13,8 +13,8 @@ const options = {
 };
 
 db.mongoose = mongoose;
-// db.connection = db.mongoose.createConnection(`mongodb://unvmrczl9nmvrtrvrjlb:lVMEdLKdhzLEPgLik1Z1@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017,n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017/bybyaysdyybmbws?replicaSet=rs0`)
-db.connection = db.mongoose.createConnection(`mongodb://127.0.0.1:27017/fresha`)
+db.connection = db.mongoose.createConnection(`mongodb://unvmrczl9nmvrtrvrjlb:lVMEdLKdhzLEPgLik1Z1@n1-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017,n2-c2-mongodb-clevercloud-customers.services.clever-cloud.com:27017/bybyaysdyybmbws?replicaSet=rs0`)
+// db.connection = db.mongoose.createConnection(`mongodb://127.0.0.1:27017/fresha`)
 autoIncrement.initialize(db.connection);
 
 db.currency = require("./currency.model")(db.connection, autoIncrement);
@@ -36,6 +36,8 @@ db.appointment = require("./appointment.model")(db.connection, autoIncrement);
 db.appointmentItem = require("./appointmentItem.model")(db.connection, autoIncrement);
 db.voucher = require("./voucher.model")(db.connection, autoIncrement);
 db.country = require("./country.model")(db.connection, autoIncrement);
+db.order = require("./order.model")(db.connection, autoIncrement);
+db.cart = require("./cart.model")(db.connection, autoIncrement);
 db.ROLES = ["user", "supplier", "client", "member"];
 
 module.exports = db;
